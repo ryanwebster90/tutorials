@@ -399,8 +399,8 @@ class Normalization(nn.Module):
 #
 
 # desired depth layers to compute style/content losses :
-content_layers_default = ['conv_4']
-style_layers_default = ['conv_1', 'conv_2', 'conv_3', 'conv_4', 'conv_5']
+content_layers_default = ['conv_13']
+style_layers_default = ['conv_1', 'conv_3', 'conv_5', 'conv_9', 'conv_13']
 
 def get_style_model_and_losses(cnn, normalization_mean, normalization_std,
                                style_img, content_img,
@@ -433,6 +433,7 @@ def get_style_model_and_losses(cnn, normalization_mean, normalization_std,
             layer = nn.ReLU(inplace=False)
         elif isinstance(layer, nn.MaxPool2d):
             name = 'pool_{}'.format(i)
+            layer = nn.AvgPool2d(kernel_size=layer.kernel_size,stride=layer.stride, padding = layer.padding)
         elif isinstance(layer, nn.BatchNorm2d):
             name = 'bn_{}'.format(i)
         else:
